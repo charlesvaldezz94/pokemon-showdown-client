@@ -714,6 +714,8 @@ export const Dex = new class implements ModdedDex {
 			spriteData.cryurl += '.mp3';
 		}
 
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+
 		if (animationData[facing + 'f'] && options.gender === 'F') facing += 'f';
 		let allowAnim = !Dex.prefs('noanim') && !Dex.prefs('nogif');
 		if (allowAnim && spriteData.gen >= 6) spriteData.pixelated = false;
@@ -723,6 +725,12 @@ export const Dex = new class implements ModdedDex {
 
 			spriteData.w = animationData[facing].w;
 			spriteData.h = animationData[facing].h;
+			if (kyburmonSprites.includes(name)) {
+				spriteData.url = 'sprites/' + dir + '/' + name + '.gif';
+				spriteData.w *= 0.6;
+				spriteData.h *= 0.6;
+				return spriteData;
+			}
 			spriteData.url += dir + '/' + name + '.gif';
 		} else {
 			// There is no entry or enough data in pokedex-mini.js
@@ -733,6 +741,13 @@ export const Dex = new class implements ModdedDex {
 			// so there are no sprites for it
 			if (spriteData.gen >= 4 && miscData['frontf'] && options.gender === 'F') {
 				name += '-f';
+			}
+
+			if (kyburmonSprites.includes(name)) {
+				spriteData.url = 'sprites/' + dir + '/' + name + '.gif';
+				spriteData.w *= 0.6;
+				spriteData.h *= 0.6;
+				return spriteData;
 			}
 
 			spriteData.url += dir + '/' + name + '.png';
@@ -828,10 +843,16 @@ export const Dex = new class implements ModdedDex {
 		let id = toID(pokemon.species);
 		let spriteid = pokemon.spriteid;
 		let species = Dex.species.get(pokemon.species);
-		if (pokemon.species && !spriteid) {
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const isKyburmon = kyburmonSprites.includes(pokemon.species);
+
+		if (isKyburmon) {
+			spriteid = pokemon.species;
+		} else if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
 		if (species.exists === false) return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
+
 		if (Dex.afdMode) {
 			return {
 				spriteid,
@@ -870,21 +891,33 @@ export const Dex = new class implements ModdedDex {
 			}
 			return spriteData;
 		}
-		spriteData.spriteDir = 'sprites/gen5';
-		if (gen <= 1 && species.gen <= 1) spriteData.spriteDir = 'sprites/gen1';
-		else if (gen <= 2 && species.gen <= 2) spriteData.spriteDir = 'sprites/gen2';
-		else if (gen <= 3 && species.gen <= 3) spriteData.spriteDir = 'sprites/gen3';
-		else if (gen <= 4 && species.gen <= 4) spriteData.spriteDir = 'sprites/gen4';
-		spriteData.x = 10;
-		spriteData.y = 5;
+		if (!gen && isKyburmon) {
+			spriteData.spriteDir = 'sprites/dex';
+		} else {
+			if (gen <= 1 && species.gen <= 1) spriteData.spriteDir = 'sprites/gen1';
+			else if (gen <= 2 && species.gen <= 2) spriteData.spriteDir = 'sprites/gen2';
+			else if (gen <= 3 && species.gen <= 3) spriteData.spriteDir = 'sprites/gen3';
+			else if (gen <= 4 && species.gen <= 4) spriteData.spriteDir = 'sprites/gen4';
+			spriteData.x = 10;
+			spriteData.y = 5;
+		}
 		return spriteData;
 	}
 
 	getTeambuilderSprite(pokemon: any, gen = 0) {
 		if (!pokemon) return '';
+		let spritehtml = '';
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
 		const data = this.getTeambuilderSpriteData(pokemon, gen);
 		const shiny = (data.shiny ? '-shiny' : '');
-		return `background-image:url(${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x}px ${data.y}px;background-repeat:no-repeat`;
+		const isKyburmon = kyburmonSprites.includes(pokemon.species);
+		if (isKyburmon) {
+			spritehtml = `background-image:url(/${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x - 10}px ${data.y}px;background-repeat:no-repeat';
+			background-size: 90%;`;
+		} else {
+			spritehtml = `background-image:url(${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x}px ${data.y}px;background-repeat:no-repeat`;
+		}
+		return spritehtml;
 	}
 
 	getItemIcon(item: any) {
