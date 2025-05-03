@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "play.pokemonshowdown.com",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
