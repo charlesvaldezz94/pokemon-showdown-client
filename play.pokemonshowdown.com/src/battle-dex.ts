@@ -846,10 +846,16 @@ export const Dex = new class implements ModdedDex {
 		let id = toID(pokemon.species);
 		let spriteid = pokemon.spriteid;
 		let species = Dex.species.get(pokemon.species);
-		if (pokemon.species && !spriteid) {
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const isKyburmon = kyburmonSprites.includes(pokemon.species);
+
+		if (isKyburmon) {
+			spriteid = pokemon.species;
+		} else if (pokemon.species && !spriteid) {
 			spriteid = species.spriteid || toID(pokemon.species);
 		}
 		if (species.exists === false) return { spriteDir: 'sprites/gen5', spriteid: '0', x: 10, y: 5 };
+
 		if (Dex.afdMode) {
 			return {
 				spriteid,
@@ -888,21 +894,33 @@ export const Dex = new class implements ModdedDex {
 			}
 			return spriteData;
 		}
-		spriteData.spriteDir = 'sprites/gen5';
-		if (gen <= 1 && species.gen <= 1) spriteData.spriteDir = 'sprites/gen1';
-		else if (gen <= 2 && species.gen <= 2) spriteData.spriteDir = 'sprites/gen2';
-		else if (gen <= 3 && species.gen <= 3) spriteData.spriteDir = 'sprites/gen3';
-		else if (gen <= 4 && species.gen <= 4) spriteData.spriteDir = 'sprites/gen4';
-		spriteData.x = 10;
-		spriteData.y = 5;
+		if (!gen && isKyburmon) {
+			spriteData.spriteDir = 'sprites/dex';
+		} else {
+			if (gen <= 1 && species.gen <= 1) spriteData.spriteDir = 'sprites/gen1';
+			else if (gen <= 2 && species.gen <= 2) spriteData.spriteDir = 'sprites/gen2';
+			else if (gen <= 3 && species.gen <= 3) spriteData.spriteDir = 'sprites/gen3';
+			else if (gen <= 4 && species.gen <= 4) spriteData.spriteDir = 'sprites/gen4';
+			spriteData.x = 10;
+			spriteData.y = 5;
+		}
 		return spriteData;
 	}
 
 	getTeambuilderSprite(pokemon: any, gen = 0) {
 		if (!pokemon) return '';
+		let spritehtml = '';
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
 		const data = this.getTeambuilderSpriteData(pokemon, gen);
 		const shiny = (data.shiny ? '-shiny' : '');
-		return `background-image:url(${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x}px ${data.y}px;background-repeat:no-repeat`;
+		const isKyburmon = kyburmonSprites.includes(pokemon.species);
+		if (isKyburmon) {
+			spritehtml = `background-image:url(sprites/dex/${shiny}/${data.spriteid}.png);background-position:${data.x - 10}px ${data.y}px;background-repeat:no-repeat';
+			background-size: 90%;`;
+		} else {
+			spritehtml = `background-image:url(${Dex.resourcePrefix}${data.spriteDir}${shiny}/${data.spriteid}.png);background-position:${data.x}px ${data.y}px;background-repeat:no-repeat`;
+		}
+		return spritehtml;
 	}
 
 	getItemIcon(item: any) {
