@@ -846,7 +846,7 @@ export const Dex = new class implements ModdedDex {
 		let id = toID(pokemon.species);
 		let spriteid = pokemon.spriteid;
 		let species = Dex.species.get(pokemon.species);
-		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp', 'Parker-Greninja', 'Lilia-Luxray'];
 		const isKyburmon = kyburmonSprites.includes(pokemon.species);
 
 		if (isKyburmon) {
@@ -910,7 +910,7 @@ export const Dex = new class implements ModdedDex {
 	getTeambuilderSprite(pokemon: any, gen = 0) {
 		if (!pokemon) return '';
 		let spritehtml = '';
-		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp', 'Parker-Greninja', 'Lilia-Luxray'];
 		const data = this.getTeambuilderSpriteData(pokemon, gen);
 		const shiny = (data.shiny ? '-shiny' : '');
 		const isKyburmon = kyburmonSprites.includes(pokemon.species);
