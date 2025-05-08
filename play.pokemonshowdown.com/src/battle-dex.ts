@@ -822,7 +822,13 @@ export const Dex = new class implements ModdedDex {
 			return `background:transparent url(${Dex.resourcePrefix}sprites/pokemonicons-pokeball-sheet.png) no-repeat scroll -80px 4px`;
 		}
 
+		// Attempting to specify Kybur Icons
 		let id = toID(pokemon);
+		if (pokemon === 'lilialuxray') {
+			id = toID('luxray')
+		}
+
+
 		if (!pokemon || typeof pokemon === 'string') pokemon = null;
 		// @ts-expect-error safe, but too lazy to cast
 		if (pokemon?.speciesForme) id = toID(pokemon.speciesForme);
@@ -846,7 +852,7 @@ export const Dex = new class implements ModdedDex {
 		let id = toID(pokemon.species);
 		let spriteid = pokemon.spriteid;
 		let species = Dex.species.get(pokemon.species);
-		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp', 'Parker-Greninja', 'Lilia-Luxray'];
 		const isKyburmon = kyburmonSprites.includes(pokemon.species);
 
 		if (isKyburmon) {
@@ -897,6 +903,7 @@ export const Dex = new class implements ModdedDex {
 		if (!gen && isKyburmon) {
 			spriteData.spriteDir = 'sprites/dex';
 		} else {
+			spriteData.spriteDir = 'sprites/gen5';
 			if (gen <= 1 && species.gen <= 1) spriteData.spriteDir = 'sprites/gen1';
 			else if (gen <= 2 && species.gen <= 2) spriteData.spriteDir = 'sprites/gen2';
 			else if (gen <= 3 && species.gen <= 3) spriteData.spriteDir = 'sprites/gen3';
@@ -910,7 +917,7 @@ export const Dex = new class implements ModdedDex {
 	getTeambuilderSprite(pokemon: any, gen = 0) {
 		if (!pokemon) return '';
 		let spritehtml = '';
-		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp'];
+		const kyburmonSprites = ['Melody-Gardevoir', 'Blue-Blastoise', 'Daniel-Machamp', 'Parker-Greninja', 'Lilia-Luxray'];
 		const data = this.getTeambuilderSpriteData(pokemon, gen);
 		const shiny = (data.shiny ? '-shiny' : '');
 		const isKyburmon = kyburmonSprites.includes(pokemon.species);
