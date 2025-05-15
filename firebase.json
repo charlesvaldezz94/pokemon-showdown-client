@@ -1,0 +1,21 @@
+{
+  "hosting": {
+    "public": "play.pokemonshowdown.com",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/testclient.html?~~localhost:8000"
+      },
+      {
+        "source": "**",
+        "destination": "/testclient.html?~~localhost:8000"
+      }
+    ]
+  }
+}

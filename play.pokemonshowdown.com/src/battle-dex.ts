@@ -825,9 +825,8 @@ export const Dex = new class implements ModdedDex {
 		// Attempting to specify Kybur Icons
 		let id = toID(pokemon);
 		if (pokemon === 'lilialuxray') {
-			id = toID('luxray')
+			id = toID('luxray');
 		}
-
 
 		if (!pokemon || typeof pokemon === 'string') pokemon = null;
 		// @ts-expect-error safe, but too lazy to cast
