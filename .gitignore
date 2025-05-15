@@ -9,9 +9,6 @@ npm-debug.log
 /play.pokemonshowdown.com/dirindex/webfonts/
 /play.pokemonshowdown.com/dirindex/fontawesome5*
 
-/play.pokemonshowdown.com/sprites/
-/play.pokemonshowdown.com/audio/
-
 # built from other sources
 /play.pokemonshowdown.com/index.php
 /play.pokemonshowdown.com/index.html
@@ -48,3 +45,5 @@ npm-debug.log
 /teams.pokemonshowdown.com/caches/
 /teams.pokemonshowdown.com/index.html
 /teams.pokemonshowdown.com/ads.txt
+.firebase/hosting..cache
+.firebase/hosting.cGxheS5wb2tlbW9uc2hvd2Rvd24uY29t.cache
